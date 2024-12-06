@@ -57,3 +57,8 @@ func load_level_data() -> void:
 		
 		#_level_data[level_number_string] = level_number_string + "_value"
 		_level_data[level_number_string] = setup_level(level_number_string, raw_data[level_number_string])
+
+
+func get_level_data(level_number: String) -> LevelLayout:
+	return _level_data[level_number]
+	
