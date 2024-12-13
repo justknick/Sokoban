@@ -20,6 +20,10 @@ grow_vertical = 2
 texture = ExtResource("1_dp8rf")
 stretch_mode = 1
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(190, 162)
+zoom = Vector2(1.5, 1.5)
+
 [node name="TileLayers" type="Node2D" parent="."]
 
 [node name="Floor" type="TileMapLayer" parent="TileLayers"]
@@ -41,7 +45,3 @@ tile_set = ExtResource("2_0exut")
 [node name="Player" parent="." instance=ExtResource("3_m8c6u")]
 z_index = 1
 position = Vector2(180, 289)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(190, 162)
-zoom = Vector2(1.5, 1.5)

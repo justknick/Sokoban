@@ -3,11 +3,12 @@ extends Node2D
 const SOURCE_ID = 0 
 
 @onready var tile_layers: Node2D = $TileLayers
-@onready var floor: TileMapLayer = $TileLayers/Floor
-@onready var wall: TileMapLayer = $TileLayers/Wall
-@onready var targets: TileMapLayer = $TileLayers/Targets
-@onready var boxes: TileMapLayer = $TileLayers/Boxes
+@onready var floor_tiles: TileMapLayer = $TileLayers/Floor
+@onready var wall_tiles: TileMapLayer = $TileLayers/Wall
+@onready var targets_tiles: TileMapLayer = $TileLayers/Targets
+@onready var boxes_tiles: TileMapLayer = $TileLayers/Boxes
 @onready var player: AnimatedSprite2D = $Player
+@onready var camera_2d: Camera2D = $Camera2D
 
 var _total_moves: int = 0
 
@@ -18,7 +19,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	pass 
+	#move_camera()
+	pass
 
 
 func create_layer_list() -> void: 
@@ -63,6 +65,28 @@ func clear_tiles() -> void:
 		tile_layer.clear()
 
 
+func camera_size(tile_map_rect: Rect2i) -> Rect2i: 
+	var tile_map_width: Rect2i
+	var tile_map_width_x: float = tile_map_rect.size.x * LevelData.TILE_SIZE
+	var tile_map_width_y: float = tile_map_rect.size.y * LevelData.TILE_SIZE
+	return tile_map_width
+
+
+func move_camera() -> void: 
+	var tile_map_rect: Rect2i = floor_tiles.get_used_rect()
+	
+	#var tile_map_width = camera_size(tile_map_rect)
+	#print(tile_map_width)
+	var tile_map_width_x: float = tile_map_rect.size.x * LevelData.TILE_SIZE
+	var tile_map_width_y: float = tile_map_rect.size.y * LevelData.TILE_SIZE
+	
+	
+	var mid_point_x: float = (tile_map_width_x / 2) + (tile_map_rect.position.x * LevelData.TILE_SIZE)
+	var mid_point_y: float = (tile_map_width_y / 2) + (tile_map_rect.position.y * LevelData.TILE_SIZE)
+	
+	camera_2d.position = Vector2(mid_point_x, mid_point_y)
+
+
 func set_up_level() -> void: 
 	var level_number: String = GameManager.get_level_selected()
 	var layout: LevelLayout = LevelData.get_level_data(level_number)
@@ -71,10 +95,10 @@ func set_up_level() -> void:
 	
 	clear_tiles()
 	#now involke setup layer function
-	setup_layer(TileLayers.LayerType.FLOOR, floor, layout)
-	setup_layer(TileLayers.LayerType.WALL, wall, layout)
-	setup_layer(TileLayers.LayerType.TARGET, targets, layout)
-	setup_layer(TileLayers.LayerType.BOX, boxes, layout)
-	setup_layer(TileLayers.LayerType.TARGET_BOX, boxes, layout)
+	setup_layer(TileLayers.LayerType.FLOOR, floor_tiles, layout)
+	setup_layer(TileLayers.LayerType.WALL, wall_tiles, layout)
+	setup_layer(TileLayers.LayerType.TARGET, targets_tiles, layout)
+	setup_layer(TileLayers.LayerType.BOX, boxes_tiles, layout)
+	setup_layer(TileLayers.LayerType.TARGET_BOX, boxes_tiles, layout)
 	
-	
+	move_camera()
