@@ -23,6 +23,15 @@ func _process(delta: float) -> void:
 	pass
 
 
+func place_player_on_map(tile_coord: Vector2i) -> void: 
+	var new_position: Vector2 = Vector2(
+		tile_coord.x * LevelData.TILE_SIZE, 
+		tile_coord.y * LevelData.TILE_SIZE
+	) + tile_layers.position
+	
+	player.position = new_position
+
+
 func create_layer_list() -> void: 
 	var layer_list = TileLayers.new().get_layer_type_list()
 	print("layer list: ", layer_list)
@@ -100,5 +109,7 @@ func set_up_level() -> void:
 	setup_layer(TileLayers.LayerType.TARGET, targets_tiles, layout)
 	setup_layer(TileLayers.LayerType.BOX, boxes_tiles, layout)
 	setup_layer(TileLayers.LayerType.TARGET_BOX, boxes_tiles, layout)
+	
+	place_player_on_map(layout.get_player_start())
 	
 	move_camera()
