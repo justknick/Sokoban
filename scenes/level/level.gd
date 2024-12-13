@@ -20,7 +20,27 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	#move_camera()
+	movement_direction()
 	pass
+
+
+func movement_direction() -> void: 
+	var movement_input: Vector2i = Vector2i.ZERO
+	
+	if Input.is_action_just_pressed("right") == true:
+		movement_input = Vector2i.RIGHT 
+		player.flip_h = false
+	if Input.is_action_just_pressed("up") == true:
+		movement_input = Vector2i.UP 
+	if Input.is_action_just_pressed("left") == true:
+		movement_input = Vector2i.LEFT 
+		player.flip_h = true
+	if Input.is_action_just_pressed("down") == true:
+		movement_input = Vector2i.DOWN 
+	
+	if movement_input != Vector2i.ZERO:
+		print(movement_input)
+
 
 
 func place_player_on_map(tile_coord: Vector2i) -> void: 
