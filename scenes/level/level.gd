@@ -11,6 +11,7 @@ const SOURCE_ID = 0
 @onready var camera_2d: Camera2D = $Camera2D
 
 var _total_moves: int = 0
+var _player_tile: Vector2i = Vector2i.ZERO
 
 
 func _ready() -> void: 
@@ -39,8 +40,8 @@ func movement_direction() -> void:
 		movement_input = Vector2i.DOWN 
 	
 	if movement_input != Vector2i.ZERO:
-		print(movement_input)
-
+		player_move(movement_input)
+		print("movement input ", movement_input)
 
 
 func place_player_on_map(tile_coord: Vector2i) -> void: 
@@ -50,6 +51,12 @@ func place_player_on_map(tile_coord: Vector2i) -> void:
 	) + tile_layers.position
 	
 	player.position = new_position
+	_player_tile = tile_coord
+
+
+func player_move(move_input: Vector2i) -> void: 
+	var new_player_tile = _player_tile + move_input 
+	place_player_on_map(new_player_tile)
 
 
 func create_layer_list() -> void: 
