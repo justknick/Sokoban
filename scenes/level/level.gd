@@ -57,18 +57,57 @@ func place_player_on_map(tile_coord: Vector2i) -> void:
 func player_move(move_input: Vector2i) -> void: 
 	var new_player_tile = _player_tile + move_input 
 	var can_move: bool = true 
+	var box_seen: bool = false 
 	
-	if call_is_wall(new_player_tile) == true: 
+	if cell_is_wall(new_player_tile) == true: 
 		can_move = false
+	
+	if cell_is_box(new_player_tile) == true: 
+		box_seen = true
+		can_move = can_box_move(new_player_tile, move_input)
+	
 	
 	if can_move == true: 
 		_total_moves += 1
+		if box_seen == true: 
+			move_box(new_player_tile, move_input)
 		place_player_on_map(new_player_tile)
 
 
-func call_is_wall(cell: Vector2i) -> bool: 
+func cell_is_wall(cell: Vector2i) -> bool: 
 	return cell in wall_tiles.get_used_cells()
+
+
+func cell_is_box(cell: Vector2i) -> bool: 
+	return cell in boxes_tiles.get_used_cells()
+
+
+func call_is_empty(cell: Vector2i) -> bool: 
+	return !cell_is_wall(cell) and !cell_is_box(cell) 
+
+
+func can_box_move(box_tile: Vector2i, direction: Vector2i) -> bool: 
+	return call_is_empty(box_tile + direction)
+
+
+func move_box(boxes_tile: Vector2i, direction: Vector2i) -> void: 
+	# checking if box can move will be done in the player_move()
+	var new_box_tile = boxes_tile + direction 
 	
+	boxes_tiles.erase_cell(boxes_tile)
+	
+	if new_box_tile in targets_tiles.get_used_cells():
+		boxes_tiles.set_cell(
+			new_box_tile, 
+			SOURCE_ID, 
+			get_atlas_coordinates_for_layer_type(TileLayers.LayerType.TARGET_BOX)
+		)
+	else:
+		boxes_tiles.set_cell(
+			new_box_tile, 
+			SOURCE_ID, 
+			get_atlas_coordinates_for_layer_type(TileLayers.LayerType.BOX)
+		)
 
 
 func create_layer_list() -> void: 
