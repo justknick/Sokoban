@@ -2,6 +2,8 @@ extends Node2D
 
 const SOURCE_ID = 0 
 
+@export var level_button: PackedScene 
+
 @onready var tile_layers: Node2D = $TileLayers
 @onready var floor_tiles: TileMapLayer = $TileLayers/Floor
 @onready var wall_tiles: TileMapLayer = $TileLayers/Wall
@@ -22,7 +24,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	#move_camera()
 	movement_direction()
+	controls()
 	pass
+
+
+func controls() -> void: 
+	if Input.is_action_just_pressed("quit"):
+		GameManager.load_main_scene()
+	if Input.is_action_just_pressed("reload"):
+		#GameManager.on_leve_selected(GameManager.get_level_selected())
+		set_up_level()
 
 
 func movement_direction() -> void: 
