@@ -56,7 +56,19 @@ func place_player_on_map(tile_coord: Vector2i) -> void:
 
 func player_move(move_input: Vector2i) -> void: 
 	var new_player_tile = _player_tile + move_input 
-	place_player_on_map(new_player_tile)
+	var can_move: bool = true 
+	
+	if call_is_wall(new_player_tile) == true: 
+		can_move = false
+	
+	if can_move == true: 
+		_total_moves += 1
+		place_player_on_map(new_player_tile)
+
+
+func call_is_wall(cell: Vector2i) -> bool: 
+	return cell in wall_tiles.get_used_cells()
+	
 
 
 func create_layer_list() -> void: 
