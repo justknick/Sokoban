@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs58y8wltkb1y"]
+
+[ext_resource type="Script" path="res://scenes/game_over/game_over_ui.gd" id="1_bu586"]
+[ext_resource type="Texture2D" uid="uid://crvsud0sp55rm" path="res://assets/panel_beigeLight.png" id="1_v2x5n"]
+[ext_resource type="LabelSettings" uid="uid://iubd5adyqn7n" path="res://assets/LG_Title_96.tres" id="2_x5u6u"]
+[ext_resource type="LabelSettings" uid="uid://cax5bcpx5u5rv" path="res://assets/LG_Blue_48.tres" id="3_7dcb4"]
+[ext_resource type="LabelSettings" uid="uid://bgrh87meg8gx1" path="res://assets/LG_Red_48.tres" id="4_yde3f"]
+
+[node name="GameOverUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bu586")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_v2x5n")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spacer" type="Control" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CompleteLabel" type="Label" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+text = "Header"
+label_settings = ExtResource("2_x5u6u")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer2" type="Control" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MovesLabel" type="Label" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+text = "Header"
+label_settings = ExtResource("3_7dcb4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer3" type="Control" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RecordLabel" type="Label" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "A NEW RECORD!!"
+label_settings = ExtResource("4_yde3f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer4" type="Control" parent="MarginContainer/NinePatchRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

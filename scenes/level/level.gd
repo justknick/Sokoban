@@ -10,10 +10,11 @@ const SOURCE_ID = 0
 @onready var player: AnimatedSprite2D = $Player
 @onready var camera_2d: Camera2D = $Camera2D
 @onready var hud: Hud = $HudCanvasLayer/Hud
+@onready var game_over_ui: GameOverUI = $HudCanvasLayer/GameOverUI
 
 var _total_moves: int = 0
 var _player_tile: Vector2i = Vector2i.ZERO
-
+var _game_over: bool = false 
 
 func _ready() -> void: 
 	set_up_level() 
@@ -22,14 +23,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	#move_camera()
-	movement_direction()
 	controls()
-	update_hud()
-	pass
-
-
-func update_hud() -> void: 
-	pass
+	movement_direction()
 
 
 func controls() -> void: 
@@ -41,6 +36,9 @@ func controls() -> void:
 
 
 func movement_direction() -> void: 
+	if _game_over == true: 
+		return
+	
 	var movement_input: Vector2i = Vector2i.ZERO
 	
 	if Input.is_action_just_pressed("right") == true:
@@ -69,6 +67,16 @@ func place_player_on_map(tile_coord: Vector2i) -> void:
 	_player_tile = tile_coord
 
 
+func check_game_progress() -> void: 
+	for t in targets_tiles.get_used_cells():
+		if cell_is_box(t) == false:
+			return
+	_game_over = true
+	print("game over: ", _game_over)
+	game_over_ui.game_over(GameManager.get_level_selected(), _total_moves)
+	ScoreSync.level_completed(GameManager.get_level_selected(), _total_moves)
+
+
 func player_move(move_input: Vector2i) -> void: 
 	var new_player_tile = _player_tile + move_input 
 	var can_move: bool = true 
@@ -88,6 +96,7 @@ func player_move(move_input: Vector2i) -> void:
 		if box_seen == true: 
 			move_box(new_player_tile, move_input)
 		place_player_on_map(new_player_tile)
+		check_game_progress()
 
 
 func cell_is_wall(cell: Vector2i) -> bool: 
@@ -194,9 +203,11 @@ func set_up_level() -> void:
 	var level_number: String = GameManager.get_level_selected()
 	var layout: LevelLayout = LevelData.get_level_data(level_number)
 	
+	_game_over = false
 	_total_moves = 0 
 	hud.set_moves_label(_total_moves)
 	hud.new_game(level_number)
+	game_over_ui.new_game()
 	
 	clear_tiles()
 	#now involke setup layer function

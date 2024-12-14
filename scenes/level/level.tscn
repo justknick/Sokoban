@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=4 uid="uid://c4g255xs6dmk2"]
+[gd_scene load_steps=7 format=4 uid="uid://c4g255xs6dmk2"]
 
 [ext_resource type="Texture2D" uid="uid://bq35t2e3p2qjy" path="res://assets/Purple.png" id="1_dp8rf"]
 [ext_resource type="Script" path="res://scenes/level/level.gd" id="1_n3vcc"]
 [ext_resource type="TileSet" uid="uid://8ufkxqy3khom" path="res://resources/level_tiles.tres" id="2_0exut"]
 [ext_resource type="PackedScene" uid="uid://dr4jcq6n2vwqt" path="res://scenes/hud/hud.tscn" id="3_butwo"]
 [ext_resource type="PackedScene" uid="uid://b1fsodckjjyfx" path="res://scenes/player/player.tscn" id="3_m8c6u"]
+[ext_resource type="PackedScene" uid="uid://bs58y8wltkb1y" path="res://scenes/game_over/game_over_ui.tscn" id="6_toidb"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_n3vcc")
@@ -50,3 +51,6 @@ position = Vector2(180, 289)
 [node name="HudCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Hud" parent="HudCanvasLayer" instance=ExtResource("3_butwo")]
+
+[node name="GameOverUI" parent="HudCanvasLayer" instance=ExtResource("6_toidb")]
+visible = false
