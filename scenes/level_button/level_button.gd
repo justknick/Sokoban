@@ -3,12 +3,20 @@ extends NinePatchRect
 class_name LevelButton
 
 @onready var level_label: Label = $LevelLabel
+@onready var check_mark: TextureRect = $CheckMark
 
 var _level_number: String = "##"
 
 
 func _ready() -> void:
+	display_level_button_labels()
+
+
+func display_level_button_labels() -> void: 
 	level_label.text = _level_number 
+	
+	if ScoreSync.has_level_score(_level_number) == true: 
+		check_mark.show() 
 
 
 func set_level_number(level_number: String) -> void: 

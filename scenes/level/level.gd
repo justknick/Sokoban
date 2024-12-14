@@ -2,8 +2,6 @@ extends Node2D
 
 const SOURCE_ID = 0 
 
-@export var level_button: PackedScene 
-
 @onready var tile_layers: Node2D = $TileLayers
 @onready var floor_tiles: TileMapLayer = $TileLayers/Floor
 @onready var wall_tiles: TileMapLayer = $TileLayers/Wall
@@ -11,6 +9,7 @@ const SOURCE_ID = 0
 @onready var boxes_tiles: TileMapLayer = $TileLayers/Boxes
 @onready var player: AnimatedSprite2D = $Player
 @onready var camera_2d: Camera2D = $Camera2D
+@onready var hud: Hud = $HudCanvasLayer/Hud
 
 var _total_moves: int = 0
 var _player_tile: Vector2i = Vector2i.ZERO
@@ -25,6 +24,11 @@ func _process(delta: float) -> void:
 	#move_camera()
 	movement_direction()
 	controls()
+	update_hud()
+	pass
+
+
+func update_hud() -> void: 
 	pass
 
 
@@ -80,6 +84,7 @@ func player_move(move_input: Vector2i) -> void:
 	
 	if can_move == true: 
 		_total_moves += 1
+		hud.set_moves_label(_total_moves)
 		if box_seen == true: 
 			move_box(new_player_tile, move_input)
 		place_player_on_map(new_player_tile)
@@ -190,6 +195,8 @@ func set_up_level() -> void:
 	var layout: LevelLayout = LevelData.get_level_data(level_number)
 	
 	_total_moves = 0 
+	hud.set_moves_label(_total_moves)
+	hud.new_game(level_number)
 	
 	clear_tiles()
 	#now involke setup layer function
